@@ -6,6 +6,7 @@
         public string KullaniciAdi { get; set; }
         public string KullaniciSoyadi { get; set; }
         public string KullaniciEmail { get; set; }
+        public string KullaniciParola { get; set; }
 
     }
 }
