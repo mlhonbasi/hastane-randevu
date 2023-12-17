@@ -1,0 +1,47 @@
+﻿@model Kullanici
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
+                    <h3 class="mb-5">Kayıt Ol</h3>
+                    <form asp-action="Kayit">
+                        <div class=" text-start fw-bold">
+                            <div class="row">
+                                <div class="col">
+                                    <label asp-for="KullaniciAdi" class="control-label"></label>
+                                    <input asp-for="KullaniciAdi" class="form-control" placeholder="Adınız"></>
+                                    <span asp-validation-for="KullaniciAdi" class="text-danger"></span>
+                                </div>
+                                <div class="col">
+                                    <label asp-for="KullaniciSoyadi" class="control-label"></label>
+                                    <input asp-for="KullaniciSoyadi" class="form-control" placeholder="Soyadınız"></>
+                                    <span asp-validation-for="KullaniciSoyadi" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="KullaniciEmail" class="control-label"></label>
+                                <input asp-for="KullaniciEmail" class="form-control" placeholder="E-Mail adresiniz"></>
+                                <span asp-validation-for="KullaniciEmail" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="KullaniciSifre" class="control-label"></label>
+                                <input type="password" asp-for="KullaniciSifre" class="form-control" placeholder="Şifre belirleyiniz"></>
+                                <span asp-validation-for="KullaniciSifre" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <input type="submit" value="Kayıt Ol" class="btn btn-primary mt-3" />
+                    </form>
+                    <div class="card-footer mt-3">
+                        Kayıtlı mısınız? <a asp-action="Giris">Giriş Yap</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
