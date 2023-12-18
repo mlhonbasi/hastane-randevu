@@ -5,7 +5,7 @@ namespace web_proje.Models
 {
     public class Kullanici
     {
-        private int KullaniciID { get; set; }
+        public int KullaniciId { get; set; }
         [Required(ErrorMessage = "Kullanıcı adı boş geçilemez.")]
         [Display(Name = "Ad")]
         public string KullaniciAdi { get; set; }
@@ -19,6 +19,7 @@ namespace web_proje.Models
 
         [Required(ErrorMessage = "Şifre boş geçilemez.")]
         [Display(Name = "Şifre")]
+        [StringLength(16, MinimumLength =8,ErrorMessage ="Şifreniz 8-16 karakter uzunluğunda olmalıdır.")]
         public string KullaniciSifre { get; set; }
 
     }
