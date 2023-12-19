@@ -15,7 +15,7 @@ namespace web_proje.Models
         [Required(ErrorMessage = "Kullanici E-Mail boş geçilemez.")]
         [EmailAddress(ErrorMessage ="Geçerli bir E-Mail giriniz.")]
         [Display(Name = "E-Mail")]
-        public MailAddress KullaniciEmail { get; set; }
+        public string KullaniciEmail { get; set; }
 
         [Required(ErrorMessage = "Şifre boş geçilemez.")]
         [Display(Name = "Şifre")]

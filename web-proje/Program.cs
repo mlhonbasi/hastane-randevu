@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using web_proje.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var connection = "Server=(localdb)\\mssqllocaldb;Database=HastaneRandevu;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+builder.Services.AddDbContext<HastaneContext>(options => options.UseSqlServer(connection));
 
 var app = builder.Build();
 
