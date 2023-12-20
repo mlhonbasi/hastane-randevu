@@ -21,6 +21,6 @@ namespace web_proje.Models
         [Display(Name = "Şifre")]
         [StringLength(16, MinimumLength =8,ErrorMessage ="Şifreniz 8-16 karakter uzunluğunda olmalıdır.")]
         public string KullaniciSifre { get; set; }
-
+        
     }
 }
