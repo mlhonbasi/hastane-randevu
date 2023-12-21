@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using web_proje.Models;
 
@@ -11,9 +12,11 @@ using web_proje.Models;
 namespace web_proje.Migrations
 {
     [DbContext(typeof(HastaneContext))]
-    partial class HastaneContextModelSnapshot : ModelSnapshot
+    [Migration("20231221200755_modelguncelleme")]
+    partial class modelguncelleme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,7 +191,7 @@ namespace web_proje.Migrations
                         .IsRequired();
 
                     b.HasOne("web_proje.Models.Hastane", "Hastane")
-                        .WithMany("Randevular")
+                        .WithMany()
                         .HasForeignKey("HastaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -222,8 +225,6 @@ namespace web_proje.Migrations
             modelBuilder.Entity("web_proje.Models.Hastane", b =>
                 {
                     b.Navigation("Polikinlikler");
-
-                    b.Navigation("Randevular");
                 });
 
             modelBuilder.Entity("web_proje.Models.Kullanici", b =>
