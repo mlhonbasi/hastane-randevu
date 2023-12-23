@@ -19,12 +19,12 @@ namespace web_proje.Models
 
         [Required(ErrorMessage = "Şifre boş geçilemez.")]
         [Display(Name = "Şifre")]
-        [StringLength(16, ErrorMessage ="Şifreniz maksimum 16 karakter uzunluğunda olmalı.")]
+        [MaxLength(16,ErrorMessage ="Şifreniz maksimum 16 karakter uzunluğunda olmalı.")]
         public string KullaniciSifre { get; set; }
 
         public bool isAdmin = false;
 
-        public List<Randevu> Randevulari { get; set; }
+        public List<Randevu>? Randevulari { get; set; }
         
     }
 }

@@ -25,10 +25,11 @@ namespace web_proje.Controllers
                 }
             }
             else{
-                ModelState.AddModelError("", "E-Mail veya şifre hatalı.");  
+                ModelState.AddModelError("", "E-Mail veya şifre hatalı.");
+                return View(Giris);
             }
 
-            return View(Giris);
+            
         }
         public IActionResult Kayit()
         {
@@ -45,7 +46,10 @@ namespace web_proje.Controllers
 
                 return RedirectToAction("Giris");
             }
-            return View(yeniKullanici);
+            else{
+                return View();
+            }
+            
            
         }
 
