@@ -1,9 +1,11 @@
-﻿using System.Reflection.Metadata;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata;
 
 namespace web_proje.Models
 {
     public class Randevu
     {
+        [Display(Name ="Randevu No")]
         public int RandevuId { get; set; }
 
         public int HastaneId { get; set; }

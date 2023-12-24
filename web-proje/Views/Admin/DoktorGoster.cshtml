@@ -1,0 +1,35 @@
+﻿@model Doktor
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DoktorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoktorAdi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoktorSoyadi)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.DoktorId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.DoktorAdi)
+            </td>
+            <th>
+                @Html.DisplayFor(model => model.DoktorSoyadi)
+            </th>
+        </tr>
+    </tbody>
+</table>
