@@ -9,90 +9,90 @@ using web_proje.Models;
 
 namespace web_proje.Controllers
 {
-    public class PolikinliksController : Controller
+    public class DoktorController : Controller
     {
         private readonly HastaneContext _context;
 
-        public PolikinliksController(HastaneContext context)
+        public DoktorController(HastaneContext context)
         {
             _context = context;
         }
 
-        // GET: Polikinliks
+        // GET: Doktors
         public async Task<IActionResult> Index()
         {
-            var hastaneContext = _context.Polikinlikler.Include(p => p.Hastane);
+            var hastaneContext = _context.Doktorlar.Include(d => d.Polikinlik);
             return View(await hastaneContext.ToListAsync());
         }
 
-        // GET: Polikinliks/Details/5
+        // GET: Doktors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Polikinlikler == null)
+            if (id == null || _context.Doktorlar == null)
             {
                 return NotFound();
             }
 
-            var polikinlik = await _context.Polikinlikler
-                .Include(p => p.Hastane)
-                .FirstOrDefaultAsync(m => m.PolikinlikId == id);
-            if (polikinlik == null)
+            var doktor = await _context.Doktorlar
+                .Include(d => d.Polikinlik)
+                .FirstOrDefaultAsync(m => m.DoktorId == id);
+            if (doktor == null)
             {
                 return NotFound();
             }
 
-            return View(polikinlik);
+            return View(doktor);
         }
 
-        // GET: Polikinliks/Create
+        // GET: Doktors/Create
         public IActionResult Create()
         {
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId");
+            ViewData["PolikinlikId"] = new SelectList(_context.Polikinlikler, "PolikinlikId", "PolikinlikId");
             return View();
         }
 
-        // POST: Polikinliks/Create
+        // POST: Doktors/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PolikinlikId,HastaneId")] Polikinlik polikinlik)
+        public async Task<IActionResult> Create([Bind("DoktorId,DoktorAdi,DoktorSoyadi,AnaBilimDali,PolikinlikId")] Doktor doktor)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(polikinlik);
+                _context.Add(doktor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId", polikinlik.HastaneId);
-            return View(polikinlik);
+            ViewData["PolikinlikId"] = new SelectList(_context.Polikinlikler, "PolikinlikId", "PolikinlikId", doktor.PolikinlikId);
+            return View(doktor);
         }
 
-        // GET: Polikinliks/Edit/5
+        // GET: Doktors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Polikinlikler == null)
+            if (id == null || _context.Doktorlar == null)
             {
                 return NotFound();
             }
 
-            var polikinlik = await _context.Polikinlikler.FindAsync(id);
-            if (polikinlik == null)
+            var doktor = await _context.Doktorlar.FindAsync(id);
+            if (doktor == null)
             {
                 return NotFound();
             }
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId", polikinlik.HastaneId);
-            return View(polikinlik);
+            ViewData["PolikinlikId"] = new SelectList(_context.Polikinlikler, "PolikinlikId", "PolikinlikId", doktor.PolikinlikId);
+            return View(doktor);
         }
 
-        // POST: Polikinliks/Edit/5
+        // POST: Doktors/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PolikinlikId,HastaneId")] Polikinlik polikinlik)
+        public async Task<IActionResult> Edit(int id, [Bind("DoktorId,DoktorAdi,DoktorSoyadi,AnaBilimDali,PolikinlikId")] Doktor doktor)
         {
-            if (id != polikinlik.PolikinlikId)
+            if (id != doktor.DoktorId)
             {
                 return NotFound();
             }
@@ -101,12 +101,12 @@ namespace web_proje.Controllers
             {
                 try
                 {
-                    _context.Update(polikinlik);
+                    _context.Update(doktor);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PolikinlikExists(polikinlik.PolikinlikId))
+                    if (!DoktorExists(doktor.DoktorId))
                     {
                         return NotFound();
                     }
@@ -117,51 +117,51 @@ namespace web_proje.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId", polikinlik.HastaneId);
-            return View(polikinlik);
+            ViewData["PolikinlikId"] = new SelectList(_context.Polikinlikler, "PolikinlikId", "PolikinlikId", doktor.PolikinlikId);
+            return View(doktor);
         }
 
-        // GET: Polikinliks/Delete/5
+        // GET: Doktors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Polikinlikler == null)
+            if (id == null || _context.Doktorlar == null)
             {
                 return NotFound();
             }
 
-            var polikinlik = await _context.Polikinlikler
-                .Include(p => p.Hastane)
-                .FirstOrDefaultAsync(m => m.PolikinlikId == id);
-            if (polikinlik == null)
+            var doktor = await _context.Doktorlar
+                .Include(d => d.Polikinlik)
+                .FirstOrDefaultAsync(m => m.DoktorId == id);
+            if (doktor == null)
             {
                 return NotFound();
             }
 
-            return View(polikinlik);
+            return View(doktor);
         }
 
-        // POST: Polikinliks/Delete/5
+        // POST: Doktors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Polikinlikler == null)
+            if (_context.Doktorlar == null)
             {
-                return Problem("Entity set 'HastaneContext.Polikinlikler'  is null.");
+                return Problem("Entity set 'HastaneContext.Doktorlar'  is null.");
             }
-            var polikinlik = await _context.Polikinlikler.FindAsync(id);
-            if (polikinlik != null)
+            var doktor = await _context.Doktorlar.FindAsync(id);
+            if (doktor != null)
             {
-                _context.Polikinlikler.Remove(polikinlik);
+                _context.Doktorlar.Remove(doktor);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PolikinlikExists(int id)
+        private bool DoktorExists(int id)
         {
-          return (_context.Polikinlikler?.Any(e => e.PolikinlikId == id)).GetValueOrDefault();
+          return (_context.Doktorlar?.Any(e => e.DoktorId == id)).GetValueOrDefault();
         }
     }
 }

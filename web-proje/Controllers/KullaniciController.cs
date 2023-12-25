@@ -21,7 +21,12 @@ namespace web_proje.Controllers
             var kullanici = dbKullaniciContext.Kullanicilar.FirstOrDefault(k => k.KullaniciEmail == girisKullanici.KullaniciEmail && k.KullaniciSifre == girisKullanici.KullaniciSifre);
             if(kullanici != null) {
                 if (ModelState.IsValid) {
-                    return View(kullanici);
+                    if (girisKullanici.isAdmin) {
+                        return RedirectToAction("Index", "AdminController");
+                    }
+                    else {
+                        return View(kullanici);
+                    }                    
                 }
             }
             else{
@@ -40,7 +45,12 @@ namespace web_proje.Controllers
         public IActionResult Kayit([Bind("KullaniciAdi, KullaniciSoyadi, KullaniciEmail, KullaniciSifre")]Kullanici yeniKullanici)
         {
             if(ModelState.IsValid)
-            {               
+            {     
+                if(yeniKullanici.KullaniciAdi=="G221210350@ogr.sakarya.edu.tr" && 
+                    yeniKullanici.KullaniciSifre == "sau")
+                {
+                    yeniKullanici.isAdmin = true;
+                }          
                 dbKullaniciContext.Add(yeniKullanici);
                 dbKullaniciContext.SaveChanges();
 

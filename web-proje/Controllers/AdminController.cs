@@ -13,23 +13,23 @@ namespace web_proje.Controllers
         }
         public IActionResult HastaneGoster()
         {
-            return View();
+            return RedirectToAction("Index","HastaneController");
         }
         public IActionResult PolikinlikGoster()
         {
-            return View();
+            return RedirectToAction("Index", "PolikinlikController");
         }
         public IActionResult DoktorGoster()
         {
-            return View();
+            return RedirectToAction("Index", "DoktorController");
         }
         public IActionResult KullaniciGoster()
         {
-            return View();
+            return RedirectToAction("Index", "KullaniciController");
         }
         public IActionResult RandevuGoster()
         {
-            return View();
+            return RedirectToAction("Index", "RandevuController");
         }
     }
 }
