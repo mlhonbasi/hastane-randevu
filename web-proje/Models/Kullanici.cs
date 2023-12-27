@@ -22,7 +22,7 @@ namespace web_proje.Models
         [MaxLength(16,ErrorMessage ="Şifreniz maksimum 16 karakter uzunluğunda olmalı.")]
         public string KullaniciSifre { get; set; }
 
-        public bool isAdmin = false;
+        public bool isAdmin { get; set; } = false;
 
         public List<Randevu>? Randevulari { get; set; }
         

@@ -1,35 +1,23 @@
-﻿@model Doktor
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<Doktor>
 
-<table class="table">
+<table class="table"> 
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DoktorId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DoktorAdi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DoktorSoyadi)
-            </th>
+            <td>Doktor No</td>
+            <td>Doktor Adı</td>
+            <td>Polikinlik</td>
+            <td>Ana Bilim Dalı</td>
         </tr>
     </thead>
     <tbody>
+        @foreach (var doktor in Model)
+        {
         <tr>
-            <td>
-                @Html.DisplayFor(model => model.DoktorId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.DoktorAdi)
-            </td>
-            <th>
-                @Html.DisplayFor(model => model.DoktorSoyadi)
-            </th>
+            <td>@doktor.DoktorId</td>
+            <td><a href="">@doktor.DoktorAdi @doktor.DoktorSoyadi</a></td>
+            <td>@doktor.Polikinlik.PolikinlikAdi</td>
+            <td>@doktor.AnaBilimDali</td>                  
         </tr>
+        }    
     </tbody>
 </table>

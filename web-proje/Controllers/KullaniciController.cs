@@ -19,22 +19,16 @@ namespace web_proje.Controllers
         public IActionResult GirisYapildi(Kullanici girisKullanici)
         {
             var kullanici = dbKullaniciContext.Kullanicilar.FirstOrDefault(k => k.KullaniciEmail == girisKullanici.KullaniciEmail && k.KullaniciSifre == girisKullanici.KullaniciSifre);
-            if(kullanici != null) {
-                if (ModelState.IsValid) {
-                    if (girisKullanici.isAdmin) {
-                        return RedirectToAction("Index", "AdminController");
-                    }
-                    else {
-                        return View(kullanici);
-                    }                    
+            if(kullanici != null) 
+            {
+                if (kullanici.isAdmin) {
+                    return RedirectToAction("Index", "Admin");
                 }
+                else {
+                    return View(kullanici);
+                }                    
             }
-            else{
-                ModelState.AddModelError("", "E-Mail veya şifre hatalı.");
-                
-            }
-            return View(Giris);
-
+            return View("Giris");
         }
         public IActionResult Kayit()
         {
