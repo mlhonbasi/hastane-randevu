@@ -16,7 +16,8 @@ namespace web_proje.Controllers
             return View();
         }
 
-        public IActionResult GirisYapildi(Kullanici girisKullanici)
+        [HttpPost]
+        public IActionResult Giris(Kullanici girisKullanici)
         {
             var kullanici = dbKullaniciContext.Kullanicilar.FirstOrDefault(k => k.KullaniciEmail == girisKullanici.KullaniciEmail && k.KullaniciSifre == girisKullanici.KullaniciSifre);
             if(kullanici != null) 
@@ -28,7 +29,7 @@ namespace web_proje.Controllers
                     return View(kullanici);
                 }                    
             }
-            return View("Giris");
+            return View();
         }
         public IActionResult Kayit()
         {
