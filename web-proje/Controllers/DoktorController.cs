@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +47,7 @@ namespace web_proje.Controllers
         }
 
         // GET: Doktors/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             ViewData["PolikinlikId"] = new SelectList(_context.Polikinlikler, "PolikinlikId", "PolikinlikId");
@@ -56,6 +59,7 @@ namespace web_proje.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind("DoktorId,DoktorAdi,DoktorSoyadi,AnaBilimDali,PolikinlikId")] Doktor doktor)
         {
             if (ModelState.IsValid)
@@ -69,6 +73,7 @@ namespace web_proje.Controllers
         }
 
         // GET: Doktors/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Doktorlar == null)
@@ -90,6 +95,7 @@ namespace web_proje.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id, [Bind("DoktorId,DoktorAdi,DoktorSoyadi,AnaBilimDali,PolikinlikId")] Doktor doktor)
         {
             if (id != doktor.DoktorId)
@@ -122,6 +128,7 @@ namespace web_proje.Controllers
         }
 
         // GET: Doktors/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Doktorlar == null)
@@ -143,6 +150,7 @@ namespace web_proje.Controllers
         // POST: Doktors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Doktorlar == null)

@@ -3,12 +3,13 @@
 @{
     ViewData["Title"] = "Index";
 }
+@if(@User.IsInRole("admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -48,11 +49,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Kullanici.KullaniciAdi)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RandevuId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RandevuId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RandevuId">Delete</a>
-            </td>
+                @if (User.IsInRole("admin"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.RandevuId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.RandevuId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.RandevuId">Delete</a>
+                    </td>
+                }
+                
         </tr>
 }
     </tbody>

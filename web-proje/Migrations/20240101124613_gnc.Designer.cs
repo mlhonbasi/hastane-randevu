@@ -12,8 +12,8 @@ using web_proje.Models;
 namespace web_proje.Migrations
 {
     [DbContext(typeof(HastaneContext))]
-    [Migration("20231225210939_admin2")]
-    partial class admin2
+    [Migration("20240101124613_gnc")]
+    partial class gnc
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,10 +45,15 @@ namespace web_proje.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("HastaneId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PolikinlikId")
                         .HasColumnType("int");
 
                     b.HasKey("DoktorId");
+
+                    b.HasIndex("HastaneId");
 
                     b.HasIndex("PolikinlikId");
 
@@ -69,7 +74,7 @@ namespace web_proje.Migrations
 
                     b.HasKey("HastaneId");
 
-                    b.ToTable("Hastaneler");
+                    b.ToTable("Hastane");
                 });
 
             modelBuilder.Entity("web_proje.Models.Kullanici", b =>
@@ -165,11 +170,19 @@ namespace web_proje.Migrations
 
             modelBuilder.Entity("web_proje.Models.Doktor", b =>
                 {
+                    b.HasOne("web_proje.Models.Hastane", "Hastane")
+                        .WithMany("Doktorlar")
+                        .HasForeignKey("HastaneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("web_proje.Models.Polikinlik", "Polikinlik")
                         .WithMany("Doktorlar")
                         .HasForeignKey("PolikinlikId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Hastane");
 
                     b.Navigation("Polikinlik");
                 });
@@ -227,6 +240,8 @@ namespace web_proje.Migrations
 
             modelBuilder.Entity("web_proje.Models.Hastane", b =>
                 {
+                    b.Navigation("Doktorlar");
+
                     b.Navigation("Polikinlikler");
 
                     b.Navigation("Randevular");

@@ -12,8 +12,8 @@ using web_proje.Models;
 namespace web_proje.Migrations
 {
     [DbContext(typeof(HastaneContext))]
-    [Migration("20231221200755_modelguncelleme")]
-    partial class modelguncelleme
+    [Migration("20240101121314_guncelleme")]
+    partial class guncelleme
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,10 +45,15 @@ namespace web_proje.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("HastaneId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PolikinlikId")
                         .HasColumnType("int");
 
                     b.HasKey("DoktorId");
+
+                    b.HasIndex("HastaneId");
 
                     b.HasIndex("PolikinlikId");
 
@@ -69,7 +74,7 @@ namespace web_proje.Migrations
 
                     b.HasKey("HastaneId");
 
-                    b.ToTable("Hastaneler");
+                    b.ToTable("Hastane");
                 });
 
             modelBuilder.Entity("web_proje.Models.Kullanici", b =>
@@ -96,6 +101,9 @@ namespace web_proje.Migrations
                     b.Property<string>("KullaniciSoyadi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isAdmin")
+                        .HasColumnType("bit");
 
                     b.HasKey("KullaniciId");
 
@@ -162,11 +170,19 @@ namespace web_proje.Migrations
 
             modelBuilder.Entity("web_proje.Models.Doktor", b =>
                 {
+                    b.HasOne("web_proje.Models.Hastane", "Hastane")
+                        .WithMany("Doktorlar")
+                        .HasForeignKey("HastaneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("web_proje.Models.Polikinlik", "Polikinlik")
                         .WithMany("Doktorlar")
                         .HasForeignKey("PolikinlikId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Hastane");
 
                     b.Navigation("Polikinlik");
                 });
@@ -191,7 +207,7 @@ namespace web_proje.Migrations
                         .IsRequired();
 
                     b.HasOne("web_proje.Models.Hastane", "Hastane")
-                        .WithMany()
+                        .WithMany("Randevular")
                         .HasForeignKey("HastaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -224,7 +240,11 @@ namespace web_proje.Migrations
 
             modelBuilder.Entity("web_proje.Models.Hastane", b =>
                 {
+                    b.Navigation("Doktorlar");
+
                     b.Navigation("Polikinlikler");
+
+                    b.Navigation("Randevular");
                 });
 
             modelBuilder.Entity("web_proje.Models.Kullanici", b =>

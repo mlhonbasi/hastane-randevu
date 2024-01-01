@@ -15,8 +15,8 @@ namespace web_proje.Models
         public DateTime RandevuTarihi { get; set; }
         public int DoktorId { get; set; }
         public Doktor Doktor { get; set; }
-        public int KullaniciId { get; set; }
-        public Kullanici Kullanici { get; set; }
+        public int? KullaniciId { get; set; }
+        public Kullanici? Kullanici { get; set; }
 
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using web_proje.Models;
 
 namespace web_proje.Controllers
 {
+    
     public class RandevuController : Controller
     {
         private readonly HastaneContext _context;
@@ -46,14 +48,23 @@ namespace web_proje.Controllers
 
             return View(randevu);
         }
+        public IActionResult GetDoktorlar(int poliklinikId)
+        {
+            var doktorlar = _context.Doktorlar.Where(d => d.PolikinlikId == poliklinikId)
+                                              .Select(d => new { value = d.DoktorId, text = d.DoktorAdi })
+                                              .ToList();
+
+            return Json(doktorlar);
+        }
+
 
         // GET: Randevus/Create
         public IActionResult Create()
         {
-            ViewData["DoktorId"] = new SelectList(_context.Doktorlar, "DoktorId", "DoktorId");
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId");
+            ViewData["DoktorId"] = new SelectList(_context.Doktorlar, "DoktorId", "DoktorAdi");
             ViewData["KullaniciId"] = new SelectList(_context.Kullanicilar, "KullaniciId", "KullaniciAdi");
-            ViewData["PolikinlikId"] = new SelectList(_context.Polikinlikler, "PolikinlikId", "PolikinlikId");
+            ViewData["PolikinlikId"] = new SelectList(_context.Polikinlikler, "PolikinlikId", "PolikinlikAdi");
+            ViewData["HastaneId"] = new SelectList(_context.Hastane, "HastaneId", "HastaneAdi");
             return View();
         }
 
@@ -71,7 +82,6 @@ namespace web_proje.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DoktorId"] = new SelectList(_context.Doktorlar, "DoktorId", "DoktorId", randevu.DoktorId);
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId", randevu.HastaneId);
             ViewData["KullaniciId"] = new SelectList(_context.Kullanicilar, "KullaniciId", "KullaniciAdi", randevu.KullaniciId);
             ViewData["PolikinlikId"] = new SelectList(_context.Polikinlikler, "PolikinlikId", "PolikinlikId", randevu.PolikinlikId);
             return View(randevu);
@@ -91,7 +101,6 @@ namespace web_proje.Controllers
                 return NotFound();
             }
             ViewData["DoktorId"] = new SelectList(_context.Doktorlar, "DoktorId", "DoktorId", randevu.DoktorId);
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId", randevu.HastaneId);
             ViewData["KullaniciId"] = new SelectList(_context.Kullanicilar, "KullaniciId", "KullaniciAdi", randevu.KullaniciId);
             ViewData["PolikinlikId"] = new SelectList(_context.Polikinlikler, "PolikinlikId", "PolikinlikId", randevu.PolikinlikId);
             return View(randevu);
@@ -130,7 +139,6 @@ namespace web_proje.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DoktorId"] = new SelectList(_context.Doktorlar, "DoktorId", "DoktorId", randevu.DoktorId);
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId", randevu.HastaneId);
             ViewData["KullaniciId"] = new SelectList(_context.Kullanicilar, "KullaniciId", "KullaniciAdi", randevu.KullaniciId);
             ViewData["PolikinlikId"] = new SelectList(_context.Polikinlikler, "PolikinlikId", "PolikinlikId", randevu.PolikinlikId);
             return View(randevu);

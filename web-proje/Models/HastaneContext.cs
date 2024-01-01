@@ -5,11 +5,14 @@ namespace web_proje.Models
 {
     public class HastaneContext: DbContext
     {
-        public DbSet<Doktor> Doktorlar { get; set; }
-        public DbSet<Hastane> Hastaneler{ get; set; }
-        public DbSet<Kullanici>Kullanicilar { get; set; }
+        public DbSet<Hastane> Hastane { get; set; }
         public DbSet<Polikinlik> Polikinlikler { get; set; }
+        
+        public DbSet<Kullanici>Kullanicilar { get; set; }
+
+        public DbSet<Doktor> Doktorlar { get; set; }
         public DbSet<Randevu> Randevular { get; set; }
+        
         public HastaneContext(DbContextOptions<HastaneContext> options) : base(options)
         {
 

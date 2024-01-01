@@ -1,0 +1,80 @@
+﻿@model web_proje.Models.Randevu
+
+@{
+    ViewData["Title"] = "Randevu Al";
+}
+
+<h4>Randevu</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="HastaneId" class="control-label">Hastane</label>
+                <select asp-for="HastaneId" class="form-control" asp-items="ViewBag.HastaneId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PolikinlikId" class="control-label">Poliklinik</label>
+                <select asp-for="PolikinlikId" class="form-control" asp-items="ViewBag.PolikinlikId">
+                    <option value="">Poliklinik Seçin</option>
+                </select>
+            </div>          
+            <div class="form-group">
+                <label asp-for="DoktorId" class="control-label">Doktor</label>
+                <select asp-for="DoktorId" class="form-control" asp-items="ViewBag.DoktorId">
+                    <option value="">Doktor Seçin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RandevuTarihi" class="control-label">Randevu Tarihi</label>
+                <input type="date" input="RandevuTarihi" class="form-control" />
+                <span asp-validation-for="RandevuTarihi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#PolikinlikId').change(function () {
+                var poliklinikId = $(this).val();
+                if (poliklinikId) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Randevu/GetDoktorlar', // GetDoktorlarByPoliklinik action'ının URL'sini buraya ekleyin
+                        data: { poliklinikId: poliklinikId },
+                        success: function (data) {
+                            var options = '<option value="">Doktor Seçin</option>';
+                            for (var i = 0; i < data.length; i++) {
+                                options += '<option value="' + data[i].value + '">' + data[i].text + '</option>';
+                            }
+                            $('#DoktorId').html(options);
+                        }
+                    });
+                } else {
+                    $('#DoktorId').empty();
+                }
+            });
+
+            // Poliklinik seçilmemişse doktorların listesini temizle
+            $('#DoktorId').attr('disabled', 'disabled'); // Doktor listesini devre dışı bırak
+            $('#PolikinlikId').change(function () {
+                if (!$(this).val()) {
+                    $('#DoktorId').empty();
+                    $('#DoktorId').attr('disabled', 'disabled');
+                } else {
+                    $('#DoktorId').removeAttr('disabled');
+                }
+            });
+        });
+    </script>
+}

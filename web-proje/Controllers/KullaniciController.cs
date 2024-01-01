@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using web_proje.Models;
 
@@ -12,24 +14,74 @@ namespace web_proje.Controllers
             dbKullaniciContext = context;
         }
         public IActionResult Giris()
-        {      
+        {
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Kullanici");
+            }
             return View();
         }
 
         [HttpPost]
-        public IActionResult Giris(Kullanici girisKullanici)
+        public async Task<IActionResult> Giris(GirisViewModel girisViewModel)
         {
-            var kullanici = dbKullaniciContext.Kullanicilar.FirstOrDefault(k => k.KullaniciEmail == girisKullanici.KullaniciEmail && k.KullaniciSifre == girisKullanici.KullaniciSifre);
-            if(kullanici != null) 
+            if (ModelState.IsValid)
             {
-                if (kullanici.isAdmin) {
-                    return RedirectToAction("Index", "Admin");
+                var kullanici = dbKullaniciContext.Kullanicilar.FirstOrDefault(k => k.KullaniciEmail == girisViewModel.Email && k.KullaniciSifre == girisViewModel.Sifre);
+
+                if (kullanici != null)
+                {
+                    var kullaniciClaims = new List<Claim>();
+
+                    kullaniciClaims.Add(new Claim(ClaimTypes.NameIdentifier, kullanici.KullaniciId.ToString()));
+                    kullaniciClaims.Add(new Claim(ClaimTypes.GivenName, kullanici.KullaniciAdi ?? ""));
+
+                    if (kullanici.KullaniciEmail == "G221210350@ogr.sakarya.edu.tr"){
+                        kullaniciClaims.Add(new Claim(ClaimTypes.Role, "admin"));
+                    }
+                    else
+                    {
+                        kullaniciClaims.Add(new Claim(ClaimTypes.Role, "kullanici"));
+                    }
+                    var claimsIdentity = new ClaimsIdentity(kullaniciClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = true
+                    };
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+
+                    var kullaniciRoles = kullaniciClaims
+                    .Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => c.Value)
+                    .ToList();
+
+                    if (kullaniciRoles.Contains("admin"))
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
+                    else if(kullaniciRoles.Contains("kullanici"))
+                    {
+                        TempData["kullaniciAdi"] = kullanici.KullaniciAdi;
+                        return RedirectToAction("HosgeldinSayfasi", "Kullanici");
+                    }                 
                 }
-                else {
-                    return View(kullanici);
-                }                    
+                else{
+                    ModelState.AddModelError("", "Kullanıcı adı veya şifre yanlış");
+                }              
             }
-            return View();
+            return View(girisViewModel);
+        } 
+ 
+        public async Task<IActionResult> Cikis()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Giris");
         }
         public IActionResult Kayit()
         {
@@ -37,25 +89,24 @@ namespace web_proje.Controllers
         }
 
         [HttpPost]
-        public IActionResult Kayit([Bind("KullaniciAdi, KullaniciSoyadi, KullaniciEmail, KullaniciSifre")]Kullanici yeniKullanici)
+        public async Task<IActionResult> Kayit([Bind("KullaniciAdi, KullaniciSoyadi, KullaniciEmail, KullaniciSifre")]Kullanici yeniKullanici)
         {
             if(ModelState.IsValid)
             {     
-                if(yeniKullanici.KullaniciAdi=="G221210350@ogr.sakarya.edu.tr" && 
+                if(yeniKullanici.KullaniciEmail=="G221210350@ogr.sakarya.edu.tr" && 
                     yeniKullanici.KullaniciSifre == "sau")
                 {
                     yeniKullanici.isAdmin = true;
                 }          
                 dbKullaniciContext.Add(yeniKullanici);
-                dbKullaniciContext.SaveChanges();
+                await dbKullaniciContext.SaveChangesAsync();
 
                 return RedirectToAction("Giris");
             }
-            else{
+            else
+            {
                 return View();
             }
-            
-           
         }
 
         public IActionResult ProfilGoster()
@@ -71,6 +122,11 @@ namespace web_proje.Controllers
                 }
             }
             return RedirectToAction("Hata");
+        }
+
+        public IActionResult HosgeldinSayfasi()
+        {           
+            return View();
         }
 
     }

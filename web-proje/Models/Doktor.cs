@@ -14,15 +14,11 @@ namespace web_proje.Models
         public string AnaBilimDali { get; set; }
         public int PolikinlikId { get; set; }
         public Polikinlik Polikinlik { get; set; }
-
-        public List<Randevu> Randevular { get; set; }
-        public class CalismaSaatleri
-        {
-            public DayOfWeek Gun { get; set; }
-            public TimeSpan Baslangic { get; set; }
-            public TimeSpan Bitis { get; set; }
-
-            public List<CalismaSaatleri> DoktorCalismaSaatleri { get; set; }
-        }
+        public int HastaneId { get; set; }
+        public Hastane Hastane { get; set; }
+        public List<Randevu>? Randevular { get; set; }
+        public List<CalismaSaati> CalismaSaatleri { get; set; }
     }
+
+
 }

@@ -8,7 +8,8 @@ namespace web_proje.Models
         public int HastaneId { get; set; }
         [Display(Name ="Hastane")]
         public string HastaneAdi { get; set; }
-        public List<Polikinlik> Polikinlikler { get; set; }
-        public List<Randevu> Randevular { get; set; }
+        public List<Polikinlik>? Polikinlikler { get; set; }
+        public List<Randevu>? Randevular { get; set; }
+        public List <Doktor>? Doktorlar { get; set; }
     }
 }

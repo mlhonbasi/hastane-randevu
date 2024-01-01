@@ -1,4 +1,4 @@
-﻿@model Kullanici
+﻿@model GirisViewModel
 @{
     ViewData["Title"] = "Giriş Yap";
 }
@@ -11,14 +11,15 @@
                     <form method = "post" asp-action="Giris">
                         <div class=" text-start fw-bold">
                             <div class="form-group">
-                                <label asp-for="KullaniciEmail" class="control-label"></label>
-                                <input asp-for="KullaniciEmail" class="form-control" placeholder="E-Mail adresiniz"></>
-                                <span asp-validation-for="KullaniciEmail" class="text-danger"></span>
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" class="form-control" placeholder="E-Mail adresiniz"></>
+                                <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                             <div class="form-group mt-4">
-                                <label asp-for="KullaniciSifre" class="control-label"></label>
-                                <input type="password" asp-for="KullaniciSifre" class="form-control" placeholder="Şifreniz"></>
-                                <span asp-validation-for="KullaniciSifre" class="text-danger"></span>
+                                <label asp-for="Sifre" class="control-label"></label>
+                                <input type="password" asp-for="Sifre" class="form-control" placeholder="Şifreniz"></>
+                                <span asp-validation-for="Sifre" class="text-danger"></span>
                             </div>
                         </div>                                               
                             <input type="submit" value="Kimliği Doğrula" class="btn btn-primary mt-3" />

@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "Hoşgeldiniz @TempData['kullaniciAdi']";
+}
+<div class="container mt-auto">
+    <h2>Hoşgeldiniz, @TempData["kullaniciAdi"]</h2><hr/>
+    <a asp-controller="Randevu" asp-action="Create" class="btn btn-outline-success">Randevu Al</a><br />
+     <a asp-controller="Kullanici" asp-action="ProfilGoster" class="btn btn-outline-primary">Profilime Git</a>
+
+</div>

@@ -5,7 +5,7 @@
 namespace web_proje.Migrations
 {
     /// <inheritdoc />
-    public partial class modelgnc : Migration
+    public partial class gnc : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

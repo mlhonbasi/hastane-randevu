@@ -12,8 +12,8 @@ using web_proje.Models;
 namespace web_proje.Migrations
 {
     [DbContext(typeof(HastaneContext))]
-    [Migration("20231220144754_upt-database")]
-    partial class uptdatabase
+    [Migration("20240101181217_update")]
+    partial class update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,33 @@ namespace web_proje.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("web_proje.Models.CalismaSaati", b =>
+                {
+                    b.Property<int>("CalismaSaatId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CalismaSaatId"));
+
+                    b.Property<TimeSpan>("Baslangic")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("Bitis")
+                        .HasColumnType("time");
+
+                    b.Property<int?>("DoktorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("secilenTarih")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CalismaSaatId");
+
+                    b.HasIndex("DoktorId");
+
+                    b.ToTable("CalismaSaati");
+                });
 
             modelBuilder.Entity("web_proje.Models.Doktor", b =>
                 {
@@ -45,10 +72,15 @@ namespace web_proje.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("HastaneId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PolikinlikId")
                         .HasColumnType("int");
 
                     b.HasKey("DoktorId");
+
+                    b.HasIndex("HastaneId");
 
                     b.HasIndex("PolikinlikId");
 
@@ -69,7 +101,7 @@ namespace web_proje.Migrations
 
                     b.HasKey("HastaneId");
 
-                    b.ToTable("Hastaneler");
+                    b.ToTable("Hastane");
                 });
 
             modelBuilder.Entity("web_proje.Models.Kullanici", b =>
@@ -96,6 +128,9 @@ namespace web_proje.Migrations
                     b.Property<string>("KullaniciSoyadi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isAdmin")
+                        .HasColumnType("bit");
 
                     b.HasKey("KullaniciId");
 
@@ -135,7 +170,13 @@ namespace web_proje.Migrations
                     b.Property<int>("DoktorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("KullaniciId")
+                    b.Property<int>("HastaneId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("KullaniciId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PolikinlikId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RandevuTarihi")
@@ -145,18 +186,37 @@ namespace web_proje.Migrations
 
                     b.HasIndex("DoktorId");
 
+                    b.HasIndex("HastaneId");
+
                     b.HasIndex("KullaniciId");
+
+                    b.HasIndex("PolikinlikId");
 
                     b.ToTable("Randevular");
                 });
 
+            modelBuilder.Entity("web_proje.Models.CalismaSaati", b =>
+                {
+                    b.HasOne("web_proje.Models.Doktor", null)
+                        .WithMany("CalismaSaatleri")
+                        .HasForeignKey("DoktorId");
+                });
+
             modelBuilder.Entity("web_proje.Models.Doktor", b =>
                 {
+                    b.HasOne("web_proje.Models.Hastane", "Hastane")
+                        .WithMany("Doktorlar")
+                        .HasForeignKey("HastaneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("web_proje.Models.Polikinlik", "Polikinlik")
                         .WithMany("Doktorlar")
                         .HasForeignKey("PolikinlikId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Hastane");
 
                     b.Navigation("Polikinlik");
                 });
@@ -180,25 +240,50 @@ namespace web_proje.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("web_proje.Models.Hastane", "Hastane")
+                        .WithMany("Randevular")
+                        .HasForeignKey("HastaneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("web_proje.Models.Kullanici", "Kullanici")
+                        .WithMany("Randevulari")
+                        .HasForeignKey("KullaniciId");
+
+                    b.HasOne("web_proje.Models.Polikinlik", "Polikinlik")
                         .WithMany()
-                        .HasForeignKey("KullaniciId")
+                        .HasForeignKey("PolikinlikId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Doktor");
 
+                    b.Navigation("Hastane");
+
                     b.Navigation("Kullanici");
+
+                    b.Navigation("Polikinlik");
                 });
 
             modelBuilder.Entity("web_proje.Models.Doktor", b =>
                 {
+                    b.Navigation("CalismaSaatleri");
+
                     b.Navigation("Randevular");
                 });
 
             modelBuilder.Entity("web_proje.Models.Hastane", b =>
                 {
+                    b.Navigation("Doktorlar");
+
                     b.Navigation("Polikinlikler");
+
+                    b.Navigation("Randevular");
+                });
+
+            modelBuilder.Entity("web_proje.Models.Kullanici", b =>
+                {
+                    b.Navigation("Randevulari");
                 });
 
             modelBuilder.Entity("web_proje.Models.Polikinlik", b =>

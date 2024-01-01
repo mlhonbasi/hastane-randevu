@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -45,9 +46,10 @@ namespace web_proje.Controllers
         }
 
         // GET: Polikinliks/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId");
+            ViewData["HastaneId"] = new SelectList(_context.Hastane, "HastaneId", "HastaneId");
             return View();
         }
 
@@ -56,7 +58,8 @@ namespace web_proje.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PolikinlikId,HastaneId")] Polikinlik polikinlik)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Create([Bind("PolikinlikId,PolikinlikAdi,HastaneId")] Polikinlik polikinlik)
         {
             if (ModelState.IsValid)
             {
@@ -64,11 +67,12 @@ namespace web_proje.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId", polikinlik.HastaneId);
+            ViewData["HastaneId"] = new SelectList(_context.Hastane, "HastaneId", "HastaneId", polikinlik.HastaneId);
             return View(polikinlik);
         }
 
         // GET: Polikinliks/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Polikinlikler == null)
@@ -81,7 +85,7 @@ namespace web_proje.Controllers
             {
                 return NotFound();
             }
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId", polikinlik.HastaneId);
+            ViewData["HastaneId"] = new SelectList(_context.Hastane, "HastaneId", "HastaneId", polikinlik.HastaneId);
             return View(polikinlik);
         }
 
@@ -90,7 +94,8 @@ namespace web_proje.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PolikinlikId,HastaneId")] Polikinlik polikinlik)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("PolikinlikId,PolikinlikAdi,HastaneId")] Polikinlik polikinlik)
         {
             if (id != polikinlik.PolikinlikId)
             {
@@ -117,11 +122,12 @@ namespace web_proje.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HastaneId"] = new SelectList(_context.Hastaneler, "HastaneId", "HastaneId", polikinlik.HastaneId);
+            ViewData["HastaneId"] = new SelectList(_context.Hastane, "HastaneId", "HastaneId", polikinlik.HastaneId);
             return View(polikinlik);
         }
 
         // GET: Polikinliks/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Polikinlikler == null)
@@ -143,6 +149,7 @@ namespace web_proje.Controllers
         // POST: Polikinliks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Polikinlikler == null)

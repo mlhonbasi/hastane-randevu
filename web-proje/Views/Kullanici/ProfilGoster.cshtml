@@ -37,14 +37,18 @@
             <td>
                 @Html.DisplayFor(model => model.KullaniciSifre)
             </td>
-            @for (int i = 0; i < Model.Randevulari.Count; i++)
+            @if(Model.Randevulari is not null)
             {
+                @for (int i = 0; i < Model.Randevulari.Count; i++)
+                {
 
-                <td>@Html.DisplayFor(x => x.Randevulari[i].Hastane.HastaneAdi)</td>
-                <td>@Html.DisplayFor(x => x.Randevulari[i].Polikinlik.PolikinlikAdi)</td>
-                <td>@Html.DisplayFor(x => x.Randevulari[i].Doktor.DoktorAdi)</td>
-                <td>@Html.DisplayFor(x => x.Randevulari[i].RandevuTarihi.ToString("dd.MM.yyyy - HH:mm"))</td>
+                    <td>@Html.DisplayFor(x => x.Randevulari[i].Hastane.HastaneAdi)</td>
+                    <td>@Html.DisplayFor(x => x.Randevulari[i].Polikinlik.PolikinlikAdi)</td>
+                    <td>@Html.DisplayFor(x => x.Randevulari[i].Doktor.DoktorAdi)</td>
+                    <td>@Html.DisplayFor(x => x.Randevulari[i].RandevuTarihi.ToString("dd.MM.yyyy - HH:mm"))</td>
+                }
             }
+            
         </tr>
     </tbody>
 </table>

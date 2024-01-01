@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Randevu Sistemine Hoşgeldiniz</title>
+    <title>@ViewData["Title"] - Randevu Sistemi </title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/web_proje.styles.css" asp-append-version="true" />
@@ -20,20 +20,37 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Hastane" asp-action="Index">Hastane</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Polikinlik" asp-action="Index">Polikinlikler</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Polikinliks" asp-action="Index">Polikinlikler</a>
-                        </li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Doktor" asp-action="Index">Doktorlar</a>
+                        </li>                    
                     </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item ml-auto">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Kullanici" asp-action="Giris">Randevu Al</a>
-                        </li>
-                    </ul>
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <ul class="navbar-nav">
+                            <li class="nav-item ml-auto">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Kullanici" asp-action="ProfilGoster">@User.Identity.Name</a>
+                            </li>
+                            <li class="nav-item ml-auto">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Kullanici" asp-action="Cikis">Çıkış Yap</a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav">
+                            <li class="nav-item ml-auto">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Kullanici" asp-action="Giris">Giriş Yap</a>
+                            </li>
+                            <li class="nav-item ml-auto">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Kullanici" asp-action="Kayit">Kayıt Ol</a>
+                            </li>
+                        </ul>
+                    }
                 </div>
             </div>
         </nav>

@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using web_proje.Models;
 
 namespace web_proje.Controllers
 {
-    
+    [Authorize(Roles ="admin")]
     public class AdminController : Controller
     {
         private HastaneContext HastaneContext;
@@ -13,23 +14,23 @@ namespace web_proje.Controllers
         }
         public IActionResult HastaneGoster()
         {
-            return RedirectToAction("Index","HastaneController");
+            return RedirectToAction("Index", "Hastane");
         }
         public IActionResult PolikinlikGoster()
         {
-            return RedirectToAction("Index", "PolikinlikController");
+            return RedirectToAction("Index", "Polikinlik");
         }
         public IActionResult DoktorGoster()
         {
-            return RedirectToAction("Index", "DoktorController");
+            return RedirectToAction("Index", "Doktor");
         }
         public IActionResult KullaniciGoster()
         {
-            return RedirectToAction("Index", "KullaniciController");
+            return RedirectToAction("Index", "Kullanici");
         }
         public IActionResult RandevuGoster()
         {
-            return RedirectToAction("Index", "RandevuController");
+            return RedirectToAction("Index", "Randevu");
         }
     }
 }

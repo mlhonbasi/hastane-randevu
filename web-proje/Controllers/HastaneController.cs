@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,23 +19,23 @@ namespace web_proje.Controllers
             _context = context;
         }
 
-        // GET: Hastanes
+        // GET: Hastane
         public async Task<IActionResult> Index()
         {
-              return _context.Hastaneler != null ? 
-                          View(await _context.Hastaneler.ToListAsync()) :
-                          Problem("Entity set 'HastaneContext.Hastaneler'  is null.");
+              return _context.Hastane != null ? 
+                          View(await _context.Hastane.ToListAsync()) :
+                          Problem("Entity set 'HastaneContext.Hastane'  is null.");
         }
 
-        // GET: Hastanes/Details/5
+        // GET: Hastane/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Hastaneler == null)
+            if (id == null || _context.Hastane == null)
             {
                 return NotFound();
             }
 
-            var hastane = await _context.Hastaneler
+            var hastane = await _context.Hastane
                 .FirstOrDefaultAsync(m => m.HastaneId == id);
             if (hastane == null)
             {
@@ -44,17 +45,19 @@ namespace web_proje.Controllers
             return View(hastane);
         }
 
-        // GET: Hastanes/Create
+        // GET: Hastane/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Hastanes/Create
+        // POST: Hastane/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind("HastaneId,HastaneAdi")] Hastane hastane)
         {
             if (ModelState.IsValid)
@@ -66,15 +69,16 @@ namespace web_proje.Controllers
             return View(hastane);
         }
 
-        // GET: Hastanes/Edit/5
+        // GET: Hastane/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Hastaneler == null)
+            if (id == null || _context.Hastane == null)
             {
                 return NotFound();
             }
 
-            var hastane = await _context.Hastaneler.FindAsync(id);
+            var hastane = await _context.Hastane.FindAsync(id);
             if (hastane == null)
             {
                 return NotFound();
@@ -82,10 +86,11 @@ namespace web_proje.Controllers
             return View(hastane);
         }
 
-        // POST: Hastanes/Edit/5
+        // POST: Hastane/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("HastaneId,HastaneAdi")] Hastane hastane)
         {
@@ -117,15 +122,15 @@ namespace web_proje.Controllers
             return View(hastane);
         }
 
-        // GET: Hastanes/Delete/5
+        // GET: Hastane/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Hastaneler == null)
+            if (id == null || _context.Hastane == null)
             {
                 return NotFound();
             }
 
-            var hastane = await _context.Hastaneler
+            var hastane = await _context.Hastane
                 .FirstOrDefaultAsync(m => m.HastaneId == id);
             if (hastane == null)
             {
@@ -135,19 +140,20 @@ namespace web_proje.Controllers
             return View(hastane);
         }
 
-        // POST: Hastanes/Delete/5
+        // POST: Hastane/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Hastaneler == null)
+            if (_context.Hastane == null)
             {
-                return Problem("Entity set 'HastaneContext.Hastaneler'  is null.");
+                return Problem("Entity set 'HastaneContext.Hastane'  is null.");
             }
-            var hastane = await _context.Hastaneler.FindAsync(id);
+            var hastane = await _context.Hastane.FindAsync(id);
             if (hastane != null)
             {
-                _context.Hastaneler.Remove(hastane);
+                _context.Hastane.Remove(hastane);
             }
             
             await _context.SaveChangesAsync();
@@ -156,7 +162,7 @@ namespace web_proje.Controllers
 
         private bool HastaneExists(int id)
         {
-          return (_context.Hastaneler?.Any(e => e.HastaneId == id)).GetValueOrDefault();
+          return (_context.Hastane?.Any(e => e.HastaneId == id)).GetValueOrDefault();
         }
     }
 }
